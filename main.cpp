@@ -39,15 +39,36 @@ class sharedPtr{
         return *this;
     }
 
+    P& operator*(){
+        return *stored_pointer;
+    }
+
+    P& operator->(){
+        return *stored_pointer;
+    }
+
+    void reset(P* ptr){
+        remove()
+        count = new int(1);
+        stored_pointer = ptr;
+    }
+
+    void swap(sharedPtr& ptr){
+        std::swap(ptr.count, count);
+        std::swap(ptr.stored_pointer, stored_pointer);
+    }
+
 
 
     P* get(){
         return stored_pointer;
     }
 
-    int get_copies_number(){
+    int use_count(){
         return *count;
     }
+
+
 
 
     void remove(){
@@ -79,19 +100,19 @@ int main(){
     sharedPtr<int> b = a;
 
     // b = a;
-    std::cout << "number should be 2: "<< b.get_copies_number() << "\n";
+    std::cout << "number should be 2: "<< b.use_count() << "\n";
 
     sharedPtr<int> c = b;
 
     
-    std::cout << "number should be 3: "<<b.get_copies_number() << "\n";
-    std::cout << "number should be 3: "<<a.get_copies_number() << "\n";
+    std::cout << "number should be 3: "<<b.use_count() << "\n";
+    std::cout << "number should be 3: "<<a.use_count() << "\n";
     int* num2 = (new int(3));
 
     sharedPtr<int> d = sharedPtr(num2);
     a = d;
-    std::cout << "number should be 2: "<< b.get_copies_number() << "\n";
-    std::cout << "number should be 2: "<< a.get_copies_number() << "\n";
+    std::cout << "number should be 2: "<< d.use_count() << "\n";
+    std::cout << "number should be 2: "<< a.use_count() << "\n";
 
 
     std::cout << "done\n";
