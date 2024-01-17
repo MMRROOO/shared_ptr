@@ -12,7 +12,13 @@ if (USE_ASAN)
 endif()
 
 # Add source files
-add_executable(MyExecutable main.cpp)
+add_executable(MyExecutable main.cpp src/SharedPtr.cpp)
+
+target_include_directories(MyExecutable PRIVATE include)
+
+# tests
+find_package(Catch2 QUIET)
+target_link_libraries(MyExecutable PRIVATE Catch2::Catch2)
 
 # Set C++ standard
 set_target_properties(MyExecutable PROPERTIES
