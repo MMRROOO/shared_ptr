@@ -49,10 +49,34 @@ TEST_CASE("test dereferencing"){
 
 TEST_CASE("test reset"){
     
-    int* num = (new int(1));
+    int* num = (new int(2));
 
     SharedPtr<int> a = SharedPtr(num);
+    SharedPtr<int> b = a;
     a.reset(new int(1));
     
     CHECK(*a == 1);
+    CHECK(a.use_count() == 1);
+
+}
+
+
+TEST_CASE("test swap"){
+    
+    int* num = (new int(1));
+
+    int* num2 = (new int(2));
+
+
+    SharedPtr<int> a = SharedPtr(num);
+    SharedPtr<int> b = a;
+
+
+    SharedPtr<int> c = SharedPtr(num2);
+
+    CHECK((*a == 1 && *b == 1 && *c == 2 && a.use_count() == 2 && c.use_count() == 1));
+    a.swap(c);
+    CHECK((*a == 2 && a.use_count() == 1));
+    CHECK((*b == 1 && b.use_count() == 2));
+    CHECK((*c == 1 && c.use_count() == 2));
 }

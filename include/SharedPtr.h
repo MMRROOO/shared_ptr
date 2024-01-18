@@ -1,6 +1,8 @@
 #ifndef SHAREDPTR_H
 #define SHAREDPTR_H
 
+#include <algorithm>
+
 
 
 template<typename P>
@@ -56,10 +58,10 @@ class SharedPtr{
         stored_pointer = ptr;
     }
 
-    // void swap(SharedPtr<P>& ptr){
-    //     std::swap(ptr.count, count);
-    //     std::swap(ptr.stored_pointer, stored_pointer);
-    // }
+    void swap(SharedPtr<P>& ptr){
+        std::swap(ptr.count, count);
+        std::swap(ptr.stored_pointer, stored_pointer);
+    }
 
     P* get(){
         return stored_pointer;
