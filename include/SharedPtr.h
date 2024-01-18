@@ -7,37 +7,83 @@ template<typename P>
 class SharedPtr{
 
     public:
-    explicit SharedPtr(P* pointer_ = nullptr);
+    explicit SharedPtr(P* pointer_ = nullptr):    
+        stored_pointer(pointer_),
+        count(new int(1))
+    {}
 
-    SharedPtr(const SharedPtr& pointer_);
+    SharedPtr(SharedPtr<P>& pointer_):
+        stored_pointer(pointer_.stored_pointer),
+        count(pointer_.count)
+    {   
+        (*count)++;
+    }
 
-    ~SharedPtr();
+    ~SharedPtr(){
+        remove();
+    }
     
 
     // bool operator!=(sharedPtr other){
     //     return !(count == other.count && stored_pointer == other.stored_pointer);
     // }
 
-    SharedPtr& operator=(SharedPtr& other);
+    SharedPtr<P>& operator=(SharedPtr<P>& other){
 
-    P& operator*();
+        if (this != &other){
+            remove();
+            count = other.count;
+            stored_pointer = other.stored_pointer;
+            (*count) ++;   
+        }
 
-    P& operator->();
-
-    void reset(P* ptr);
-
-    void swap(SharedPtr& ptr);
+        return *this;
+    }
 
 
-    P* get();
+    P& operator*(){
+        return *stored_pointer;
+    }
 
-    int use_count();
+    P& operator->(){
+        return *stored_pointer;
+    }
 
+
+    void reset(P* ptr){
+        remove();
+        count = new int(1);
+        stored_pointer = ptr;
+    }
+
+    // void swap(SharedPtr<P>& ptr){
+    //     std::swap(ptr.count, count);
+    //     std::swap(ptr.stored_pointer, stored_pointer);
+    // }
+
+    P* get(){
+        return stored_pointer;
+    }
+
+
+    int use_count(){
+        return *count;
+    }
 
     private:
 
 
-    void remove();
+    void remove(){
+        (*count) --;
+        if ((*count) == 0){
+            delete count;
+
+            if (stored_pointer){
+
+                delete stored_pointer; 
+            }
+        }
+    }
 
     int* count;
     P* stored_pointer;
