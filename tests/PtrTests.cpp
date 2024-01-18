@@ -3,10 +3,18 @@
 
 using namespace Catch;
 
-
+class value {
+    public:
+    value(int _number, int _number2):
+        number(_number),
+        number2(_number2)
+    {}
+    int number;
+    int number2;
+};
 TEST_CASE("test gets pointer out of shared pointer"){
     int* num = (new int(2));
-    sharedPtr<int> a = sharedPtr(num);
+    SharedPtr<int> a = SharedPtr(num);
     CHECK(a.get() == num);
 
 }
@@ -15,41 +23,36 @@ TEST_CASE("test get correct number of uses"){
     int* num = (new int(2));
     int* num2 = (new int(3));
 
-    sharedPtr<int> a = sharedPtr(num);
-    sharedPtr<int> b = a;
+    SharedPtr<int> a = SharedPtr(num);
+    SharedPtr<int> b = a;
     CHECK(a.use_count() == 2);
 
-    sharedPtr<int> a = b;
+    a = b;
     CHECK(a.use_count() == 2);
-    sharedPtr<int> a = sharedPtr(num2);
+    a = SharedPtr(num2);
     CHECK(a.use_count() == 1);
-    CHECK(b.use_count() == 1);
+    b = a;
+    CHECK(b.use_count() == 2);
 }
 
 TEST_CASE("test dereferencing"){
-    class animal{
-        public:
-        animal():
-            sound("bark"){}
-        
-        string sound;
-    }
+
     
 
-    animal* dog = (new animal);
+    value* num = (new value(1,2));
 
-    sharedPtr<animal> a = sharedPtr(dog);
+    SharedPtr<value> a = SharedPtr(num);
     
-    CHECK(a->sound == dog->sound);
-    CHECK(*a.sound == *dog.sound);
+    CHECK(a->number == num->number);
+    CHECK((*a).number == (*num).number);
 }
 
 TEST_CASE("test reset"){
     
     int* num = (new int(1));
 
-    sharedPtr<int> a = sharedPtr(num);
+    SharedPtr<int> a = SharedPtr(num);
     a.reset(new int(1));
     
-    CHECK(*a == 2);
+    CHECK(*a == 1);
 }

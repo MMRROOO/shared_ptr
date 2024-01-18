@@ -28,7 +28,7 @@ class SharedPtr{
     //     return !(count == other.count && stored_pointer == other.stored_pointer);
     // }
 
-    SharedPtr<P>& operator=(SharedPtr<P>& other){
+    SharedPtr<P> operator=(const SharedPtr<P>& other){
 
         if (this != &other){
             remove();
@@ -45,8 +45,8 @@ class SharedPtr{
         return *stored_pointer;
     }
 
-    P& operator->(){
-        return *stored_pointer;
+    P* operator->(){
+        return stored_pointer;
     }
 
 

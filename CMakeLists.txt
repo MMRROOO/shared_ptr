@@ -12,7 +12,7 @@ if (USE_ASAN)
 endif()
 
 # Add source files
-set(SOURCE main.cpp src/SharedPtr.cpp tests/RunTests.cpp)
+set(SOURCE main.cpp src/SharedPtr.cpp tests/RunTests.cpp tests/PtrTests.cpp)
 add_executable(MyExecutable ${SOURCE})
 
 target_include_directories(MyExecutable PRIVATE include)
