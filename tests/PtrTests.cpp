@@ -12,6 +12,8 @@ class value {
     int number;
     int number2;
 };
+
+
 TEST_CASE("test gets pointer out of shared pointer"){
     int* num = (new int(2));
     SharedPtr<int> a = SharedPtr(num);
@@ -57,6 +59,8 @@ TEST_CASE("test reset"){
     
     CHECK(*a == 1);
     CHECK(a.use_count() == 1);
+    CHECK(*b == 2);
+    CHECK(b.use_count() == 1);
 
 }
 
