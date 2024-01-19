@@ -12,7 +12,20 @@ if (USE_ASAN)
 endif()
 
 # Add source files
-add_executable(MyExecutable main.cpp)
+set(SOURCE main.cpp src/SharedPtr.cpp include/SharedPtr.h tests/RunTests.cpp tests/PtrTests.cpp)
+add_executable(MyExecutable ${SOURCE})
+
+target_include_directories(MyExecutable PRIVATE include)
+
+# tests
+find_package(Catch2 QUIET)
+if (Catch2_FOUND)
+    message(STATUS "Catch2 found. Path: ${Catch2_INCLUDE_DIRS}")
+else()
+    message(FATAL_ERROR "Catch2 not found.")
+endif()
+
+target_link_libraries(MyExecutable PRIVATE  include Catch2::Catch2)
 
 # Set C++ standard
 set_target_properties(MyExecutable PROPERTIES
